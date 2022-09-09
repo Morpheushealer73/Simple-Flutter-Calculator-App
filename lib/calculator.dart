@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_string_escapes, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'dart:core';
 
 class MyCalculator extends StatefulWidget {
   const MyCalculator({super.key});
@@ -10,9 +11,53 @@ class MyCalculator extends StatefulWidget {
 }
 
 class CalculatorScreen extends State<MyCalculator> {
+  Widget calBtn(String btntxt, double marginLeft, double marginRight) {
+    return Container(
+      margin: EdgeInsets.only(
+          left: marginLeft, top: 0, right: marginRight, bottom: 0),
+      height: 70,
+      child: TextButton(
+        child: Text(
+          btntxt,
+          style: TextStyle(fontSize: 50),
+        ),
+        onPressed: () {
+          setState(() {
+            var str = screenTxt;
+            userInput(btntxt);
+            if (str.length >= 9) {
+              isButtonDisabled = true;
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget calOperatorBtn(
+      String operator, double marginLeft, double marginRight) {
+    return Container(
+      margin: EdgeInsets.only(
+          left: marginLeft, top: 0, right: marginRight, bottom: 0),
+      height: 70,
+      child: TextButton(
+        onPressed: () {
+          calculateVal(operator);
+        },
+        child: Text(
+          operator,
+          style: TextStyle(
+            fontSize: 50,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Ian\'s Calculator"),
       ),
@@ -27,10 +72,19 @@ class CalculatorScreen extends State<MyCalculator> {
                     BorderSide(width: 1.5, color: Color.fromARGB(55, 0, 0, 0)),
               ),
             ),
-            child: Text(
-              screenTxt,
-              style: TextStyle(fontSize: 70),
+            child: TextField(
+              textAlign: TextAlign.right,
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: screenTxt,
+              ),
+              style: TextStyle(fontSize: 50),
+              // ),
             ),
+            //child: Text(
+            //screenTxt,
+            //style: TextStyle(fontSize: 50),
+            // ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,210 +119,34 @@ class CalculatorScreen extends State<MyCalculator> {
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 5, top: 0, right: 20, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  onPressed: () {
-                    calculateVal("/");
-                  },
-                  child: Icon(
-                    Icons.percent,
-                    color: Colors.blue,
-                    size: 50,
-                  ),
-                ),
-              ),
+              calOperatorBtn("/", 5, 20),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 20, top: 0, right: 0, bottom: 0),
-                height: 70,
-                child: TextButton(
-                    child: Text(
-                      "7",
-                      style: TextStyle(fontSize: 50),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        userInput("7");
-                      });
-                    }),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "8",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("8");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "9",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("9");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 20, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  onPressed: () {
-                    calculateVal("*");
-                  },
-                  child: Text(
-                    "x",
-                    style: TextStyle(
-                      fontSize: 50,
-                    ),
-                  ),
-                ),
-              ),
+              calBtn("7", 20, 0),
+              calBtn("8", 10, 10),
+              calBtn("9", 10, 10),
+              calOperatorBtn("x", 10, 20),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 20, top: 0, right: 0, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "4",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("4");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "5",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("5");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "6",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("6");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 20, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  onPressed: () {
-                    calculateVal("-");
-                  },
-                  child: Text(
-                    "-",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                ),
-              ),
+              calBtn("4", 20, 0),
+              calBtn("5", 10, 10),
+              calBtn("6", 10, 10),
+              calOperatorBtn("-", 10, 20),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 20, top: 0, right: 0, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "1",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("1");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "2",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("2");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  child: Text(
-                    "3",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      userInput("3");
-                    });
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 20, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  onPressed: () {
-                    calculateVal("+");
-                  },
-                  child: Text(
-                    "+",
-                    style: TextStyle(fontSize: 50),
-                  ),
-                ),
-              ),
+              calBtn("1", 20, 0),
+              calBtn("2", 10, 10),
+              calBtn("3", 10, 10),
+              calOperatorBtn("+", 10, 20),
             ],
           ),
           Row(
@@ -296,23 +174,7 @@ class CalculatorScreen extends State<MyCalculator> {
                   },
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 10, top: 0, right: 20, bottom: 0),
-                height: 70,
-                child: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      userInput(".");
-                    });
-                  },
-                  child: Text(
-                    ".",
-                    style: TextStyle(
-                      fontSize: 50,
-                    ),
-                  ),
-                ),
-              ),
+              calBtn(".", 10, 20),
               Container(
                 margin: EdgeInsets.only(left: 10, top: 0, right: 20, bottom: 0),
                 height: 70,
@@ -344,20 +206,34 @@ class CalculatorScreen extends State<MyCalculator> {
   num val2 = 0;
   int length = 0;
   String operator = "";
+  bool pointTrigger = false;
+  bool isButtonDisabled = false;
 
   void userInput(String btnText) {
+    var str = screenTxt;
+    length = str.length;
+
     if (screenTxt != "0" && btnText != "backSpace") {
-      screenTxt += btnText;
+      //Decimal Point Control
+      if (btnText == "." && pointTrigger == false) {
+        screenTxt += btnText;
+        pointTrigger = true;
+      } else if (btnText == ".") {
+        screenTxt = screenTxt;
+      } else {
+        screenTxt += btnText;
+      }
     } //if (screenTxt != "0" && btnText != "backSpace")
 
     else if (btnText == "backSpace") {
-      var str = screenTxt;
-      length = str.length;
-
       if (length > 0) {
         screenTxt = str.substring(0, length - 1);
         setState(() {
           screenTxt = screenTxt;
+
+          if (str.substring(length - 1, length) == ".") {
+            pointTrigger = false;
+          }
         }); //setState(())
       } //(length > 0)
 
@@ -366,7 +242,6 @@ class CalculatorScreen extends State<MyCalculator> {
           screenTxt = "0";
         }); //setState(())
       } //if (length == 1)
-
     } //else if (btnText == "backSpace")
 
     else if (btnText != "backSpace") {
@@ -377,38 +252,18 @@ class CalculatorScreen extends State<MyCalculator> {
   void calculateVal(String userInput) {
     //check user input of operator
     switch (userInput) {
-      case "*":
-        operator = userInput;
-        val1 = num.parse(screenTxt);
-        setState(() {
-          screenTxt = "0";
-        });
-        break;
+      case "x":
       case "/":
-        operator = userInput;
-        val1 = num.parse(screenTxt);
-        setState(() {
-          screenTxt = "0";
-        });
-        break;
       case "+":
-        operator = userInput;
-        val1 = num.parse(screenTxt);
-        setState(() {
-          screenTxt = "0";
-        });
-        break;
       case "-":
-        operator = userInput;
-        val1 = num.parse(screenTxt);
-        setState(() {
-          screenTxt = "0";
-        });
+        pointTrigger = false;
+        operatorPressed(userInput);
         break;
       case "=":
+        pointTrigger = false;
         //operation
         switch (operator) {
-          case "*":
+          case "x":
             val2 = num.parse(screenTxt);
 
             setState(() {
@@ -444,7 +299,7 @@ class CalculatorScreen extends State<MyCalculator> {
         }
         break;
       default:
-    }
+    } //switch (userInput)
   }
 
 //function to refresh
@@ -454,19 +309,43 @@ class CalculatorScreen extends State<MyCalculator> {
     length = 0;
     screenTxt = "0";
     operator = "";
+    pointTrigger = false;
   }
 
   //function to check if number has decimal
   void displayResult(num result) {
-    num _result;
+    num calcResult;
+    var str = screenTxt;
+    length = str.length;
 
-    _result = result % result.toInt();
+    calcResult = result % result.toInt();
 
-    if (_result == 0) {
-      _result = result.toInt();
-      screenTxt = _result.toString();
+    if (calcResult == 0) {
+      calcResult = result.toInt();
+
+      if (result > 999999999) {
+        screenTxt = exponentNum(result);
+      } else {
+        screenTxt = result.toString();
+      }
     } else {
-      screenTxt = result.toString();
+      if (result < .999999999) {
+        screenTxt = exponentNum(result);
+      } else {
+        screenTxt = result.toString();
+      }
     }
+  }
+
+  void operatorPressed(String userInput) {
+    operator = userInput;
+    val1 = num.parse(screenTxt);
+    setState(() {
+      screenTxt = "0";
+    });
+  }
+
+  String exponentNum(num number) {
+    return number.toStringAsExponential(3);
   }
 }
